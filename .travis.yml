@@ -1,0 +1,45 @@
+sudo: required
+services:
+- docker
+language: generic
+env:
+  global:
+  - USER="ulysse.vautier"
+  - ORGANIZATION="Rob-Orb"
+  - EMAIL="ulysse.vautier@gmail.com"
+  - REPO="rob-orb.github.io"
+  - GH_REPO="github.com/${ORGANIZATION}/${REPO}.git"
+before_install:
+- sudo apt-get update
+- sudo apt install -y qemu-system-arm qemu-user-static git reprepro gnupg
+- docker pull roborb/soft
+- docker run -t -d --rm --name roborb-soft -v ${PWD}/../:/var/tmp roborb/soft
+- docker exec -it roborb-soft /bin/bash
+- sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu stretch main" > /etc/apt/sources.list.d/ros-latest.list'
+- sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+- sudo apt update
+- sudo apt upgrade
+- sudo apt-get install build-essential python-yaml cmake subversion wget python-setuptools mercurial git-core libapr1-dev libaprutil1-dev libbz2-dev python-dev libgtest-dev python-paramiko libboost-all-dev liblog4cxx10-dev pkg-config python-empy swig python-nose lsb-release python-pip python-gtk2
+- sudo pip install rosdep rosinstall_generator wstool rosinstall
+- sudo rosdep init
+- rosdep update
+- mkdir catkin_ws
+- cd catkin_ws
+- rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall
+- wstool init src kinetic-ros_comm-wet.rosinstall
+- rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch
+script:
+- echo "###################################"
+after_success:
+- MESSAGE=$(git log --format=%B -n 1)${TRAVIS_COMMIT}
+- cd ../
+- git clone git://${GH_REPO}
+- cd ${REPO}
+- reprepro -b debian/ includedeb stretch ../*.deb
+- git status
+- git remote
+- git config user.email ${EMAIL}
+- git config user.name ${USER}
+- git add .
+- git commit -m "${MESSAGE}"
+- git push "https://${GH_TOKEN}@${GH_REPO}" master > /dev/null 2>&1
