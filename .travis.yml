@@ -9,9 +9,12 @@ env:
   - EMAIL="ulysse.vautier@gmail.com"
   - REPO="rob-orb.github.io"
   - GH_REPO="github.com/${ORGANIZATION}/${REPO}.git"
+  - secure: LiuqdaHEWxShp5obZmUOOS0k5BaRSfhK8KvDfVzFpF9l5CTSFmzkxO3t2bVv3m8Ag1HgchGmHXxdGRvpNCWrF8m6gd9BSmMJu173BU2KIvSsCozZklnR8D7QV2DAJ4kaTWDRT+X9SQDhxiaGvOoxCZjv9f48mSKMQhP9BZiixYOYmhFA4BcOV2dxITT4h0oCo2AI27/LDeXvUcFwNhT5ubx6sNLTq3zGX7huLIbJqBTD4rgfXvHGcBOFVRPl+4phT3QmXR6WipMsubFsCoVjU7sAuy18eFAgjBM7/JtttlpCviubtjkemsQVkCBdwRqFwUkIWOP7QFlHgc/4xetNpnHUWVLIcwj7oBBic1Q7Ad1P3/gi59pZTIXh2To736GUH8AQZgdrO7bw3h14PO1aIt+t8C4EiyPpmZzJDIRsVsGJ+zMt25gvVXAzif6tg7CtQ41KPaVTRSHP4up4fO0UkK3NOQaoda2VY+zH/6cUx/x3gxXzHHZm1F10X3+fPnxBSzmQ0wI9wygh55j9wSj9ghYCKaI5nniF5IrHem2F+cfSvNIpNuw8oPRFopgGxjiQx6AbI6Zcqo9YpHdG7bxeUcUYtfZ5mmLiws/KN69MtaezYScNhd2gUtpiZNiKJRCOTdD4zG2JCp75EVdFfmmct4iC5pPb7XGviQ9rInrz2tw=
 before_install:
+- openssl aes-256-cbc -K $encrypted_c4ae961d1455_key -iv $encrypted_c4ae961d1455_iv -in private.asc.enc -out private.asc -d
 - sudo apt-get update
 - sudo apt install -y qemu-system-arm qemu-user-static git reprepro gnupg
+- gpg --allow-secret-key-import --import private.asc
 - docker pull roborb/soft
 - docker run -t -d --rm --name roborb-soft -v ${PWD}/../:/var/tmp roborb/soft
 - docker exec -it roborb-soft /bin/bash
@@ -19,13 +22,17 @@ before_install:
 - sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 - sudo apt update
 - sudo apt upgrade
-- sudo apt-get install build-essential python-yaml cmake subversion wget python-setuptools mercurial git-core libapr1-dev libaprutil1-dev libbz2-dev python-dev libgtest-dev python-paramiko libboost-all-dev liblog4cxx10-dev pkg-config python-empy swig python-nose lsb-release python-pip python-gtk2
+- sudo apt-get install build-essential python-yaml cmake subversion wget python-setuptools
+  mercurial git-core libapr1-dev libaprutil1-dev libbz2-dev python-dev libgtest-dev
+  python-paramiko libboost-all-dev liblog4cxx10-dev pkg-config python-empy swig python-nose
+  lsb-release python-pip python-gtk2
 - sudo pip install rosdep rosinstall_generator wstool rosinstall
 - sudo rosdep init
 - rosdep update
 - mkdir catkin_ws
 - cd catkin_ws
-- rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall
+- rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp
+  --tar > kinetic-ros_comm-wet.rosinstall
 - wstool init src kinetic-ros_comm-wet.rosinstall
 - rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch
 script:
