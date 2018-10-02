@@ -31,8 +31,7 @@ before_install:
 - rosdep update
 - mkdir catkin_ws
 - cd catkin_ws
-- rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp
-  --tar > kinetic-ros_comm-wet.rosinstall
+- rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall
 - wstool init src kinetic-ros_comm-wet.rosinstall
 - rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch
 script:
