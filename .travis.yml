@@ -9,8 +9,7 @@ env:
   - EMAIL="ulysse.vautier@gmail.com"
   - REPO="rob-orb.github.io"
   - GH_REPO="github.com/${ORGANIZATION}/${REPO}.git"
-  - secure: LiuqdaHEWxShp5obZmUOOS0k5BaRSfhK8KvDfVzFpF9l5CTSFmzkxO3t2bVv3m8Ag1HgchGmHXxdGRvpNCWrF8m6gd9BSmMJu173BU2KIvSsCozZklnR8D7QV2DAJ4kaTWDRT+X9SQDhxiaGvOoxCZjv9f48mSKMQhP9BZiixYOYmhFA4BcOV2dxITT4h0oCo2AI27/LDeXvUcFwNhT5ubx6sNLTq3zGX7huLIbJqBTD4rgfXvHGcBOFVRPl+4phT3QmXR6WipMsubFsCoVjU7sAuy18eFAgjBM7/JtttlpCviubtjkemsQVkCBdwRqFwUkIWOP7QFlHgc/4xetNpnHUWVLIcwj7oBBic1Q7Ad1P3/gi59pZTIXh2To736GUH8AQZgdrO7bw3h14PO1aIt+t8C4EiyPpmZzJDIRsVsGJ+zMt25gvVXAzif6tg7CtQ41KPaVTRSHP4up4fO0UkK3NOQaoda2VY+zH/6cUx/x3gxXzHHZm1F10X3+fPnxBSzmQ0wI9wygh55j9wSj9ghYCKaI5nniF5IrHem2F+cfSvNIpNuw8oPRFopgGxjiQx6AbI6Zcqo9YpHdG7bxeUcUYtfZ5mmLiws/KN69MtaezYScNhd2gUtpiZNiKJRCOTdD4zG2JCp75EVdFfmmct4iC5pPb7XGviQ9rInrz2tw=
-  - secure: JR1aszUJIkVVCMpWD2RDt0LkP96CbrwsSwId1SfgmQKPeK42BzocFZT/JxvTbes4h3RSTPKsLFmYkfiOpck0vN659riryGAjqhCztwHcvawPIF5gCFnqEh6NNBS7bsS3aVKQoQAU+r4cmUPhfFWhsmDOg6dUQNM8XhTh9WezLjQQgu/xalqtb8XKSW831JKAZMYrwhaSznm5Eqw6aaQXWmuT/IIkJjfJNV59F2VtLtbnwgDLziwkz3t8uV7sj1ev8GXFDEHzpmHQ3i0be2INO+LIfgCgGJuBcsOsiRXcHuS+fRcFtzBTYe1WzrmUwxfBnx7s+9eKJXaFwgWB20NvN2paoPffQKt/7FKd2BUPUVuqmLR1DL8tsYmLzWtrgjxJA+kPzpB8S1GIKWIBcYo5RnKewQE6KB+3PIHVxucxyX9PhKbS51swSrnWxsxHSgFB73gKWGtD9WR7LTPiGSCMwN2ngGPyhZVSyvzFEReesyEY+2YkC5sVN5aCRQbDPlTFP32dLpG3alvYPjoEgMtq+ydwTQDMoDFWlenN48KiTPJjBfV77fa8JuYia8o52iyKGcB8AOt7Xj6U4nN6LHEHGlc1YybKfiIU3F03JZWjh5XyJzYS4QFuFG6Y6lbHL59NAkIM6tdKFTbZ3oqWRBs0h43rU+Opwq9IPvhP5YqPR1A=
+  - secure: amqeJl1xat462o+X1CunZDdrelwpo9ee4Pp2fnTSZ+sXdAuW9sk1Hxd+hwm0Hnp0X4BQJU5kuuWZqSeVzSz7Xe7+vskHZeVAQO0xqx4OjcnYHDfefSPQYFZ5zyDkUvo5jJzX85E1l4EKHno5ayKv/bjCFu3aUEQQdyQ0f7nYecvSEZWPPSsv97MGnT4MuaklYEq0ViOXBnLPsfCeNhvjeuaH9JkGSbLGc6Os60CKGLgTyZL1fE4ok8Ix1eTYCDUwPuiEEKqDcTeazQ2jcCEGiYi8ur6jdArdhLlACCbMHNvGO3mJae4tKcVJiEh0MPzwx84/JsP8cpKwv5CLudKnGfTYeOXczl//AEilo2gWcr5Q6vbyCN/T2cLvqWlDV+L5OLD9+n6y09/Wcu59M5xmQAuiuad2MWvOSU+9s8/hw/JEELUUgfJw/EnkIAS4WULrgumy0bLA3zFdSBoh19c2/A2JJJ5WNX0IZh60Tdtkiqa9qhk9aQ9Zm7RlGtFlA/j2+oVd4/+zyeoc2tx4vC1H80iB7F73A+4msWq6sCsQHdRbsVMchYJ0KkXTJIbBLeozKq6bFmBR5ltMY8kXyTZtHWgWrqZ1u5je6l0sXGWy5c2rrXSyJWIS4RpQZoDhVOFn6HXSAU7vXYQQBzfV7YTfI+rjivRUpAJsGNBxLlURnxw=
 before_install:
 - openssl aes-256-cbc -K $encrypted_c4ae961d1455_key -iv $encrypted_c4ae961d1455_iv
   -in private.asc.enc -out private.asc -d
@@ -19,22 +18,26 @@ before_install:
 - gpg --allow-secret-key-import --import private.asc
 - docker pull roborb/soft
 - docker run -t -d --rm --name roborb-soft -v ${PWD}/../:/var/tmp roborb/soft
-- docker exec roborb-soft sh -c 'echo "deb http://packages.ros.org/ros/ubuntu stretch main" > /etc/apt/sources.list.d/ros-latest.list'
-- docker exec roborb-soft apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+- docker exec roborb-soft sh -c 'echo "deb http://packages.ros.org/ros/ubuntu stretch
+  main" > /etc/apt/sources.list.d/ros-latest.list'
+- docker exec roborb-soft apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key
+  421C365BD9FF1F717815A3895523BAEEB01FA116
 - docker exec roborb-soft apt update
 - docker exec roborb-soft apt upgrade
-- docker exec roborb-soft apt-get install build-essential python-yaml cmake subversion wget python-setuptools
-  mercurial git-core libapr1-dev libaprutil1-dev libbz2-dev python-dev libgtest-dev
-  python-paramiko libboost-all-dev liblog4cxx10-dev pkg-config python-empy swig python-nose
-  lsb-release python-pip python-gtk2
+- docker exec roborb-soft apt-get install build-essential python-yaml cmake subversion
+  wget python-setuptools mercurial git-core libapr1-dev libaprutil1-dev libbz2-dev
+  python-dev libgtest-dev python-paramiko libboost-all-dev liblog4cxx10-dev pkg-config
+  python-empy swig python-nose lsb-release python-pip python-gtk2
 - docker exec roborb-soft pip install rosdep rosinstall_generator wstool rosinstall
 - docker exec roborb-soft rosdep init
 - docker exec roborb-soft rosdep update
 - docker exec roborb-soft mkdir catkin_ws
 - docker exec roborb-soft cd catkin_ws
-- docker exec roborb-soft rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall
+- docker exec roborb-soft rosinstall_generator ros_comm --rosdistro kinetic --deps
+  --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall
 - docker exec roborb-soft wstool init src kinetic-ros_comm-wet.rosinstall
-- docker exec roborb-soft rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch
+- docker exec roborb-soft rosdep install --from-paths src --ignore-src --rosdistro
+  kinetic -y -r --os=debian:stretch
 script:
 - echo "###################################"
 after_success:
