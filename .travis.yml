@@ -19,24 +19,22 @@ before_install:
 - gpg --allow-secret-key-import --import private.asc
 - docker pull roborb/soft
 - docker run -t -d --rm --name roborb-soft -v ${PWD}/../:/var/tmp roborb/soft
-- docker exec -it roborb-soft /bin/bash
-- sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu stretch main" > /etc/apt/sources.list.d/ros-latest.list'
-- sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
-- sudo apt update
-- sudo apt upgrade
-- sudo apt-get install build-essential python-yaml cmake subversion wget python-setuptools
+- docker exec roborb-soft sh -c 'echo "deb http://packages.ros.org/ros/ubuntu stretch main" > /etc/apt/sources.list.d/ros-latest.list'
+- docker exec roborb-soft apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+- docker exec roborb-soft apt update
+- docker exec roborb-soft apt upgrade
+- docker exec roborb-soft apt-get install build-essential python-yaml cmake subversion wget python-setuptools
   mercurial git-core libapr1-dev libaprutil1-dev libbz2-dev python-dev libgtest-dev
   python-paramiko libboost-all-dev liblog4cxx10-dev pkg-config python-empy swig python-nose
   lsb-release python-pip python-gtk2
-- sudo pip install rosdep rosinstall_generator wstool rosinstall
-- sudo rosdep init
-- rosdep update
-- mkdir catkin_ws
-- cd catkin_ws
-- rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp
-  --tar > kinetic-ros_comm-wet.rosinstall
-- wstool init src kinetic-ros_comm-wet.rosinstall
-- rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch
+- docker exec roborb-soft pip install rosdep rosinstall_generator wstool rosinstall
+- docker exec roborb-soft rosdep init
+- docker exec roborb-soft rosdep update
+- docker exec roborb-soft mkdir catkin_ws
+- docker exec roborb-soft cd catkin_ws
+- docker exec roborb-soft rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall
+- docker exec roborb-soft wstool init src kinetic-ros_comm-wet.rosinstall
+- docker exec roborb-soft rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch
 script:
 - echo "###################################"
 after_success:
