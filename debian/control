@@ -1,0 +1,13 @@
+Source: ros-bare
+Maintainer: Ulysse Vautier <ulysse.vautier@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 0.0.1
+Priority: optional
+Section: base
+
+Package: ros-bare
+Architecture: armhf
+Priority: optional
+Section: base
+Description: ROS-Bare on Raspberry Pi Zero
+ Gives the tools to build and develop ros packages

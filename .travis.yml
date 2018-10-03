@@ -31,10 +31,14 @@ script:
   rosdep update &&
   mkdir catkin_ws &&
   cd catkin_ws &&
-  rosinstall_generator ros_comm --rosdistro kinetic --deps
-  --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall &&
+  rosinstall_generator ros_comm --rosdistro kinetic --deps --wet-only --exclude roslisp --tar > kinetic-ros_comm-wet.rosinstall &&
   wstool init src kinetic-ros_comm-wet.rosinstall &&
-  rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch'
+  rosdep install --from-paths src --ignore-src --rosdistro kinetic -y -r --os=debian:stretch &&
+  cd src/catkin/cmake/test &&
+  sed -i "s/set_target_properties(${target} PROPERTIES EXCLUDE_FROM_ALL TRUE)/#set_target_properties(${target} PROPERTIES EXCLUDE_FROM_ALL TRUE)/g" gtest.cmake &&
+  sed -i "s/set_target_properties(gtest gtest_main PROPERTIES EXCLUDE_FROM_ALL 1)/#set_target_properties(gtest gtest_main PROPERTIES EXCLUDE_FROM_ALL 1)/g" gtest.cmake &&
+  cd ../../../../ &&
+  ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space ../debian/opt/ros/kinetic '
 - echo "###################################"
 after_success:
 - MESSAGE=$(git log --format=%B -n 1)${TRAVIS_COMMIT}
