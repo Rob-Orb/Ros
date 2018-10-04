@@ -3,11 +3,12 @@ Maintainer: Ulysse Vautier <ulysse.vautier@gmail.com>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 0.0.1
 Priority: optional
-Section: base
+Section: devel
 
 Package: ros-bare
 Architecture: armhf
 Priority: optional
-Section: base
+Section: devel
 Description: ROS-Bare on Raspberry Pi Zero
  Gives the tools to build and develop ros packages
+Pre-Depends: dirmngr, python-rosdep, python-rosinstall-generator, python-wstool, python-rosinstall, build-essential, cmake, libcollada-dom-dev, git, python-defusedxml, python-netifaces
