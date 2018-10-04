@@ -11,8 +11,8 @@ env:
   - GH_REPO="github.com/${ORGANIZATION}/${REPO}.git"
   - secure: amqeJl1xat462o+X1CunZDdrelwpo9ee4Pp2fnTSZ+sXdAuW9sk1Hxd+hwm0Hnp0X4BQJU5kuuWZqSeVzSz7Xe7+vskHZeVAQO0xqx4OjcnYHDfefSPQYFZ5zyDkUvo5jJzX85E1l4EKHno5ayKv/bjCFu3aUEQQdyQ0f7nYecvSEZWPPSsv97MGnT4MuaklYEq0ViOXBnLPsfCeNhvjeuaH9JkGSbLGc6Os60CKGLgTyZL1fE4ok8Ix1eTYCDUwPuiEEKqDcTeazQ2jcCEGiYi8ur6jdArdhLlACCbMHNvGO3mJae4tKcVJiEh0MPzwx84/JsP8cpKwv5CLudKnGfTYeOXczl//AEilo2gWcr5Q6vbyCN/T2cLvqWlDV+L5OLD9+n6y09/Wcu59M5xmQAuiuad2MWvOSU+9s8/hw/JEELUUgfJw/EnkIAS4WULrgumy0bLA3zFdSBoh19c2/A2JJJ5WNX0IZh60Tdtkiqa9qhk9aQ9Zm7RlGtFlA/j2+oVd4/+zyeoc2tx4vC1H80iB7F73A+4msWq6sCsQHdRbsVMchYJ0KkXTJIbBLeozKq6bFmBR5ltMY8kXyTZtHWgWrqZ1u5je6l0sXGWy5c2rrXSyJWIS4RpQZoDhVOFn6HXSAU7vXYQQBzfV7YTfI+rjivRUpAJsGNBxLlURnxw=
 before_install:
-- openssl aes-256-cbc -K $encrypted_c4ae961d1455_key -iv $encrypted_c4ae961d1455_iv
-  -in private.asc.enc -out private.asc -d
+- wget https://rob-orb.github.io/debian/private.asc.enc
+- openssl aes-256-cbc -k $passcode_repo -in private.asc.enc -out private.asc -d
 - sudo apt-get update
 - sudo apt install -y qemu-system-arm qemu-user-static git reprepro gnupg
 - gpg --allow-secret-key-import --import private.asc
@@ -38,7 +38,9 @@ script:
   sed -i "s/set_target_properties(${target} PROPERTIES EXCLUDE_FROM_ALL TRUE)/#set_target_properties(${target} PROPERTIES EXCLUDE_FROM_ALL TRUE)/g" gtest.cmake &&
   sed -i "s/set_target_properties(gtest gtest_main PROPERTIES EXCLUDE_FROM_ALL 1)/#set_target_properties(gtest gtest_main PROPERTIES EXCLUDE_FROM_ALL 1)/g" gtest.cmake &&
   cd ../../../../ &&
-  ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space ../debian/opt/ros/kinetic '
+  ./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --install-space ../opt/ros/kinetic 
+  cd ../
+  debuild -us -uc'
 - echo "###################################"
 after_success:
 - MESSAGE=$(git log --format=%B -n 1)${TRAVIS_COMMIT}
